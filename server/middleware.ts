@@ -21,30 +21,14 @@ export function isAdmin(req: Request, res: Response, next: NextFunction) {
 }
 
 // Middleware to check if user has an active subscription
+// Modificado: Agora todos os usuários são considerados ativos (sem restrição de assinatura)
 export function hasActiveSubscription(req: Request, res: Response, next: NextFunction) {
   if (!req.isAuthenticated()) {
     return res.status(401).json({ message: "Não autenticado" });
   }
   
-  const user = req.user as User;
-  const isSubscribed = storage.isSubscriptionActive(user);
-  
-  if (isSubscribed) {
-    return next();
-  }
-  
-  const trialDaysLeft = storage.getTrialDaysLeft(user);
-  
-  if (trialDaysLeft > 0) {
-    // Still in trial period, allow access
-    return next();
-  }
-  
-  // Trial ended and no subscription
-  res.status(402).json({ 
-    message: "Seu período de teste terminou. Por favor, assine o plano para continuar usando o sistema.",
-    requiresPayment: true
-  });
+  // Acesso liberado para todos os usuários autenticados
+  return next();
 }
 
 // Factory function to create a resource owner check middleware

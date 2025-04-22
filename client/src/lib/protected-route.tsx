@@ -30,15 +30,8 @@ export function ProtectedRoute({
     );
   }
 
-  // Check if subscription is needed and redirect
-  if (user.trialDaysLeft <= 0 && !user.isSubscribed && path !== "/subscription") {
-    return (
-      <Route path={path}>
-        <Redirect to="/subscription" />
-      </Route>
-    );
-  }
-
+  // Removida verificação de assinatura - todos os usuários têm acesso completo
+  
   return (
     <Route path={path}>
       <Component />
