@@ -407,24 +407,13 @@ export class MemStorage implements IStorage {
   
   // Subscription and trial management
   isSubscriptionActive(user: User): boolean {
-    // If user has an active subscription ID, they're subscribed
-    if (user.stripeSubscriptionId) {
-      return true;
-    }
-    
-    // Otherwise, check if they're still in trial period
-    return this.getTrialDaysLeft(user) > 0;
+    // Modificado: Todos os usuários são considerados como tendo assinatura ativa
+    return true;
   }
   
   getTrialDaysLeft(user: User): number {
-    const trialEndDate = addDays(user.trialStartDate, 7); // 7-day trial
-    const today = new Date();
-    
-    if (isAfter(today, trialEndDate)) {
-      return 0;
-    }
-    
-    return differenceInDays(trialEndDate, today);
+    // Modificado: Todos os usuários sempre têm dias de teste disponíveis
+    return 999; // Um número grande para simular período de teste "infinito"
   }
 }
 
